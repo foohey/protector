@@ -283,7 +283,10 @@ module Protector
         # @yieldparam subject [Object]      Subject that object was restricted with
         # @yieldparam instance [Object]     Reference to the object being restricted (can be nil)
         def protect(&block)
-          protector_meta << block
+          migration_task = ['db:migrate'].include?(ARGV[0])
+          if !migration_task
+            protector_meta << block 
+          end
         end
       end
     end
